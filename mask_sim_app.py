@@ -112,7 +112,7 @@ class WeekResult:
 
     @property
     def server_utilization(self):
-        return self.server_busy_time / (480.0 * 7)
+        return self.server_busy_time / (480.0 * 7 * self.n_servers * 2)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -128,7 +128,7 @@ class PharmacySim:
     def __init__(self, params: Params, seed: int):
         self.p   = params
         self.rng = np.random.default_rng(seed)
-        self.result = WeekResult()
+        self.result = WeekResult(n_servers=params.n_servers)
 
     def _run_one_day(self, day_idx: int, extra_lambda: float = 0.0):
         """
