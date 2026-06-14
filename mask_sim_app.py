@@ -21,7 +21,17 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from dataclasses import dataclass, field
 from typing import Optional, List
-plt.rcParams['font.family'] = 'Malgun Gothic'
+import matplotlib.font_manager as fm
+
+# Malgun Gothic 없으면 NanumGothic 시도, 둘 다 없으면 기본 폰트
+try:
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+    fm.findfont('Malgun Gothic', fallback_to_default=False)
+except:
+    try:
+        plt.rcParams['font.family'] = 'NanumGothic'
+    except:
+        pass
 plt.rcParams['axes.unicode_minus'] = False
 
 
