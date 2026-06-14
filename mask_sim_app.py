@@ -22,16 +22,36 @@ import matplotlib.pyplot as plt
 from dataclasses import dataclass, field
 from typing import Optional, List
 import matplotlib.font_manager as fm
+import os
 
-# Malgun Gothic 없으면 NanumGothic 시도, 둘 다 없으면 기본 폰트
-try:
-    plt.rcParams['font.family'] = 'Malgun Gothic'
-    fm.findfont('Malgun Gothic', fallback_to_default=False)
-except:
-    try:
-        plt.rcParams['font.family'] = 'NanumGothic'
-    except:
-        pass
+# 폰트 캐시 강제 재빌드 (Streamlit Cloud 대응)
+fm._load_fontmanager(try_read_cache=False)
+
+# 시스템에 설치된 폰트 중 한글 폰트 탐색
+def get_korean_font():
+    font_candidates = ['NanumGothic', 'NanumBarunGothic', 'NanumMyeongjo', 
+                       'Malgun Gothic', 'AppleGothic', 'UnDotum']
+    available = {f.name for f in fm.fontManager.ttflist}
+    for font in font_candidates:
+        if font in available:
+            return font
+    return None
+
+korean_font = get_korean_font()
+if korean_font:
+    plt.rcParams['font.family'] = korean_font
+else:
+    # 절대경로로 직접 로드 (fallback)
+    nanum_paths = [
+        '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',
+        '/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf',
+    ]
+    for path in nanum_paths:
+        if os.path.exists(path):
+            fm.fontManager.addfont(path)
+            plt.rcParams['font.family'] = fm.FontProperties(fname=path).get_name()
+            break
+
 plt.rcParams['axes.unicode_minus'] = False
 
 
