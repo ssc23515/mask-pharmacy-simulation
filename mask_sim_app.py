@@ -100,6 +100,7 @@ class WeekResult:
     stockout_days: int          = 0
     # 요일별 재고 타임라인 (월~일 순서로 쌓임, 그래프용)
     inventory_timeline: List    = field(default_factory=list)
+    n_servers: int              = 1    # ← 이거 추가
 
     @property
     def avg_waiting_time(self):
