@@ -2,7 +2,6 @@
 공적마스크 5부제 약국 대기열 시뮬레이션 - Streamlit 웹앱
 =============================================================
 실행:
-    cd D:\Documents\신상철학교\2026-1\시뮬레이션\조별\Sim_Streamlit
     streamlit run mask_sim_app.py
 
 기능:
